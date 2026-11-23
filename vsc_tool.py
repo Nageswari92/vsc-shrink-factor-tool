@@ -1,4 +1,3 @@
-
 import streamlit as st
 import streamlit.components.v1 as components
 import json
@@ -97,14 +96,18 @@ st.divider()
 # 1. Shrink Factor & ABC Code Inputs
 st.subheader("1. Shrink Factor & ABC Code")
 st.caption("Shrink Factor – This is for SMT parts. | ABC Code (this is based on the item cost)")
+
+is_smt = st.checkbox("Is this an SMT part?", value=True)
 val_input = st.text_input("Enter Item Cost (e.g., 0.36, 25, or $25):", value="", key="val_field")
 
-# Formula 1: =IF(OR(A1="", A1=0), 0, IF(A1<=1, 0.01, IF(A1<=2, 0.02, 0)))
-def get_shrink_factor(val_str):
+# Formula 1: Applies only if SMT part is checked; otherwise 0
+def get_shrink_factor(val_str, smt_flag):
     try:
         num = parse_number(val_str)
         if num is None:
             return "-"
+        if not smt_flag:
+            return 0
         if num == 0:
             return 0
         elif num <= 1:
@@ -131,7 +134,7 @@ def get_abc_code(val_str):
     except ValueError:
         return "Invalid Input"
 
-sf_result = get_shrink_factor(val_input)
+sf_result = get_shrink_factor(val_input, is_smt)
 abc_result = get_abc_code(val_input)
 
 col1, col2 = st.columns(2)
