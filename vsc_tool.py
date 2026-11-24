@@ -148,16 +148,16 @@ st.divider()
 
 # 2. VSC Document Link Generator
 st.subheader("2. VSC Document Link")
-part_input = st.text_input("Enter VSC Item / Part Number (e.g., 4840-631):", value="", key="part_field")
+part_input = st.text_input("Enter VSC Item / Part Number (e.g., 2169-012):", value="", key="part_field")
 
-# Formula 3: ="\parts\" & LEFT(E1, FIND("-", E1)-1) & "\" & E1
+# Formula 3: ="v:\parts\" & LEFT(E1, FIND("-", E1)-1) & "\" & E1
 def get_vsc_path(part_str):
     part_str = part_str.strip()
     if part_str == "":
         return ""
     if "-" in part_str:
         prefix = part_str.split("-")[0]
-        return rf"\parts\{prefix}\{part_str}"
+        return rf"v:\parts\{prefix}\{part_str}"
     else:
         return "Error: Missing '-' hyphen"
 
